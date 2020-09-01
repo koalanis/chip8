@@ -9,6 +9,8 @@ import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +21,7 @@ import java.util.Scanner;
 /**
  * Created by kaleb on 12/31/2016.
  */
-public class Main extends JFrame{
+public class Main extends JFrame {
 
 
 //      http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#2.4
@@ -63,14 +65,17 @@ public class Main extends JFrame{
             setLocationRelativeTo(null);
             setVisible(true);
 
+
+
             int target = 5000;
             for(;;) {
-                infoPanel.cpu.emulateCycle();
+                short instr = infoPanel.cpu.emulateCycle();
+                infoPanel.addInstruction(instr);
+                infoPanel.updateRegisterInfo();
                 if(infoPanel.cpu.drawFlag) {
                     infoPanel.repaint();
                 }
                 if(infoPanel.cpu.numberOfOps % target == target-1) {
-//                    System.out.println(canvas.cpu.numberOfOps);
                 }
             }
         }
@@ -81,4 +86,5 @@ public class Main extends JFrame{
     public static void main(String[] args) throws InterruptedException, IOException {
         new Main();
     }
+
 }

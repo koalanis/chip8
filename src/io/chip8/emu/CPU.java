@@ -166,7 +166,7 @@ public class CPU implements KeyListener{
         }
     }
 
-    public void emulateCycle() {
+    public short emulateCycle() {
         // Fetch Opcode
         drawFlag = false;
 //        System.out.println("DrawFlag OFF");
@@ -193,6 +193,7 @@ public class CPU implements KeyListener{
             }
             --soundTimer;
         }
+        return opcode;
     }
 
     public int getPixelAt(int x, int y) {
@@ -525,9 +526,20 @@ public class CPU implements KeyListener{
     @Override
     public String toString() {
         return "CPU{" +
-                "pc=" + Integer.toHexString(pc) +
-                "instruction="+BinaryLogic.shortToHexString(BinaryLogic.twoBytesToShort(memory[pc], memory[pc+1]))+
-                "sp=" + sp +
+                "drawFlag=" + drawFlag +
+                ", halt=" + halt +
+                ", instruction="+BinaryLogic.shortToHexString(BinaryLogic.twoBytesToShort(memory[pc], memory[pc+1]))+
+                ", numberOfOps=" + numberOfOps +
+                ", V=" + Arrays.toString(V) +
+                ", I=" + I +
+                ", pc=" + Integer.toHexString(pc) +
+                ", gfx=" + Arrays.toString(gfx) +
+                ", delayTimer=" + delayTimer +
+                ", soundTimer=" + soundTimer +
+                ", stack=" + Arrays.toString(stack) +
+                ", opcode=" + opcode +
+                ", sp=" + sp +
                 '}';
     }
+
 }

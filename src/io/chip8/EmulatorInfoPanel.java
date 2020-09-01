@@ -13,6 +13,8 @@ public class EmulatorInfoPanel extends JTabbedPane {
     private int pixelSize;
     private  JTextArea textArea1;
     private  JTextArea textArea2;
+    private StringBuilder instructionList;
+
 
     private JScrollPane instructions;
     private  JScrollPane registers;
@@ -24,6 +26,7 @@ public class EmulatorInfoPanel extends JTabbedPane {
         this.pixelSize = 12;
         this.textArea1 = new JTextArea(5, 20);
         this.instructions = new JScrollPane(textArea1);
+        this.instructionList = new StringBuilder();
         this.canvas = new CPUCanvas(cpu);
 
         this.canvasPanel = new JPanel();
@@ -49,6 +52,15 @@ public class EmulatorInfoPanel extends JTabbedPane {
                 "Registers");
 
 
+    }
+
+    public void updateRegisterInfo() {
+        this.textArea2.setText(this.cpu.toString());
+    }
+
+    public void addInstruction(short inst) {
+        this.instructionList.append(Integer.toHexString(inst)).append("\n");
+        this.textArea1.setText(this.instructionList.toString());
     }
 
 }
