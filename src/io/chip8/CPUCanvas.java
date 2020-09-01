@@ -17,7 +17,7 @@ public class CPUCanvas extends JPanel {
 
     public CPUCanvas(CPU cpu) {
         this.cpu = cpu;
-        pixelSize = 3;
+        pixelSize = 10;
         this.setSize(CPU.WIDTH*pixelSize, CPU.HEIGHT*pixelSize);
     }
 

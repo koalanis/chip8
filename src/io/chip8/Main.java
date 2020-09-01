@@ -6,6 +6,8 @@ import io.chip8.emu.CPU;
 import io.chip8.emu.Emulator;
 
 import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
@@ -19,6 +21,9 @@ import java.util.Scanner;
  */
 public class Main extends JFrame{
 
+
+//      http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#2.4
+
     public Main() throws InterruptedException, IOException {
 
         System.out.println("Hello World !!!!!");
@@ -27,7 +32,7 @@ public class Main extends JFrame{
 
 
         String dirName = "\\res\\c8games\\";
-        String romName = "PONG";
+        String romName = "test_opcode.ch8";
 
         // This will reference one line at a time
         String line = null;
@@ -49,29 +54,22 @@ public class Main extends JFrame{
 
 
         if(program.length() != 0) {
+            EmulatorInfoPanel infoPanel = new EmulatorInfoPanel( new CPU(bin));
 
-            CPUCanvas canvas = new CPUCanvas(new CPU(bin));
-            addKeyListener(canvas.cpu);
-            setLayout(new BorderLayout());
-            setSize(500,300);
             setTitle("Chip 8");
+            this.setSize(infoPanel.getSize());
             setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            this.add("Center", canvas);
+            this.add(infoPanel);
             setLocationRelativeTo(null);
             setVisible(true);
 
-            canvas.cpu.initialize();
-
-
-
-            long startTime = System.currentTimeMillis();
             int target = 5000;
             for(;;) {
-                canvas.cpu.emulateCycle();
-                if(canvas.cpu.drawFlag) {
-                    canvas.repaint();
+                infoPanel.cpu.emulateCycle();
+                if(infoPanel.cpu.drawFlag) {
+                    infoPanel.repaint();
                 }
-                if(canvas.cpu.numberOfOps % target == target-1) {
+                if(infoPanel.cpu.numberOfOps % target == target-1) {
 //                    System.out.println(canvas.cpu.numberOfOps);
                 }
             }

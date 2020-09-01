@@ -385,7 +385,6 @@ public class CPU implements KeyListener{
                     }
                 }
                 drawFlag = true;
-//                System.out.println("DrawFlag ON");
                 pc += 2;
             } break;
             case 0xE000: {
