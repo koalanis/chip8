@@ -1,22 +1,18 @@
 package io.chip8;
 
-import io.chip8.CPUCanvas;
 import io.chip8.bitlogic.BinaryLogic;
 import io.chip8.emu.CPU;
 import io.chip8.emu.Emulator;
+import io.chip8.emu.EmulatorInfoPanel;
 
 import javax.swing.*;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Scanner;
 
 /**
  * Created by kaleb on 12/31/2016.
@@ -29,7 +25,6 @@ public class Main extends JFrame {
     public Main() throws InterruptedException, IOException {
 
         System.out.println("Hello World !!!!!");
-
         String workingdir = System.getProperty("user.dir");
 
 
@@ -44,16 +39,10 @@ public class Main extends JFrame {
         System.out.println(Arrays.toString(bin));
         System.out.println(bin.length);
 
-
-
-
-
         String program = Emulator.KALEID;
         byte[] bp = BinaryLogic.hexStringToByteArray(program);
         System.out.println(bp.length);
         System.out.println(program.length());
-
-
 
         if(program.length() != 0) {
             EmulatorInfoPanel infoPanel = new EmulatorInfoPanel( new CPU(bin));
@@ -65,21 +54,31 @@ public class Main extends JFrame {
             setLocationRelativeTo(null);
             setVisible(true);
 
+            infoPanel.stepButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    emulationStep(infoPanel);
+                }
+            });
 
 
-            int target = 5000;
-            for(;;) {
-                short instr = infoPanel.cpu.emulateCycle();
-                infoPanel.addInstruction(instr);
-                infoPanel.updateRegisterInfo();
-                if(infoPanel.cpu.drawFlag) {
-                    infoPanel.repaint();
-                }
-                if(infoPanel.cpu.numberOfOps % target == target-1) {
-                }
-            }
+
+//            int target = 5000;
+//            for(;;) {
+//                emulationStep(infoPanel);
+//            }
         }
 
+    }
+
+
+    public void emulationStep(EmulatorInfoPanel infoPanel) {
+        short instr = infoPanel.cpu.emulateCycle();
+        infoPanel.addInstruction(instr);
+        infoPanel.updateRegisterInfo();
+        if(infoPanel.cpu.drawFlag) {
+            infoPanel.repaint();
+        }
     }
 
 

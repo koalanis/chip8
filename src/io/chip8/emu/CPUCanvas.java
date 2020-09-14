@@ -1,4 +1,4 @@
-package io.chip8;
+package io.chip8.emu;
 
 
 import io.chip8.emu.CPU;
